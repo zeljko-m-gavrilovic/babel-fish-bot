@@ -280,7 +280,18 @@ function receivedMessage(event) {
         break;
 
       case 'generic':
-        sendGenericMessage(senderID);
+        var customSearchApi = "https://www.googleapis.com/customsearch/v1?q=" + messageText + "&cx=017114977864929569356%3Aofkvfrky6de&searchType=image&key=AIzaSyBOm9YKk4__F_tU0Cq-6stGEQUmlu0kFsk";
+        getImagesJson(customSearchApi, function(err, data) {
+            if (err !== null) {
+                console.log("Something went wrong: " + err);
+            } else {
+                console.log("Your query count: " + data.query.count);
+                var imageUrl = data.items[0].link; 
+                console.log("iamge URL is " + imageUrl);
+                sendGenericMessage(senderID, messageText, imageUrl);
+            }
+        });
+       
         break;
 
       case 'receipt':
@@ -363,7 +374,7 @@ function receivedPostback(event) {
 
   // When a postback is called, we'll send a message back to the sender to
   // let them know it was successful
-  sendTextMessage(senderID, "Postback called senderID " + senderID);
+  sendTextMessage(senderID, "Postback called senderID " + event.postback.payload);
 }
 
 /*
@@ -568,11 +579,27 @@ function sendButtonMessage(recipientId) {
   callSendAPI(messageData);
 }
 
+function getImagesJson(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("get", url, true);
+    xhr.responseType = "json";
+    xhr.onload = function() {
+      var status = xhr.status;
+      if (status == 200) {
+        callback(null, xhr.response);
+      } else {
+        callback(status);
+      }
+    };
+    xhr.send();
+}
+
 /*
  * Send a Structured Message (Generic Message type) using the Send API.
  *
  */
-function sendGenericMessage(recipientId) {
+function sendGenericMessage(recipientId, textMessage, imageUrl) {
+  
   var messageData = {
     recipient: {
       id: recipientId
@@ -582,21 +609,44 @@ function sendGenericMessage(recipientId) {
         type: "template",
         payload: {
           template_type: "generic",
-          elements: [{
+          elements: [
+            {
+            title: "text to image",
+            subtitle: "image for the entered text",
+            item_url: imageUrl,
+            image_url: imageUrl,
+            buttons: [
+                {
+                    type: "web_url",
+                    url: imageUrl,
+                    title: "Open Web URL"
+                }, 
+                {
+                    type: "postback",
+                    title: "Call Postback",
+                    payload: "Payload for first bubble",
+                }
+            ],
+          }, 
+            {
             title: "rift",
             subtitle: "Next-generation virtual reality",
             item_url: "https://www.oculus.com/en-us/rift/",
             image_url: SERVER_URL + "/assets/rift.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/rift/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for first bubble",
-            }],
-          }, {
+            buttons: [
+                {
+                    type: "web_url",
+                    url: "https://www.oculus.com/en-us/rift/",
+                    title: "Open Web URL"
+                }, 
+                {
+                    type: "postback",
+                    title: "Call Postback",
+                    payload: "Payload for first bubble",
+                }
+            ],
+          }, 
+          {
             title: "touch",
             subtitle: "Your Hands, Now in VR",
             item_url: "https://www.oculus.com/en-us/touch/",
@@ -610,7 +660,8 @@ function sendGenericMessage(recipientId) {
               title: "Call Postback",
               payload: "Payload for second bubble",
             }]
-          }]
+          }
+          ]
         }
       }
     }
