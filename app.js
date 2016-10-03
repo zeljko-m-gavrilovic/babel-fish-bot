@@ -10,9 +10,6 @@
 /* jshint node: true, devel: true */
 'use strict';
 
-var request = require("request");
-
-
 const
   bodyParser = require('body-parser'),
   config = require('config'),
