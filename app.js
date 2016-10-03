@@ -293,8 +293,8 @@ function receivedMessage(event) {
             maxRedirects: 10
             }, function(error, response, body) {
                 console.log(body);
-                var imageUrl = body.items[0].link; 
-                sendGenericMessage(senderID, messageText, imageUrl);
+                //var imageUrl = body.items[0].link; 
+                //sendGenericMessage(senderID, messageText, imageUrl);
         });
         break;
 
