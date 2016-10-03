@@ -289,8 +289,9 @@ function receivedMessage(event) {
             followRedirect: true,
             maxRedirects: 10
             }, function(error, response, body) {
-                console.log(body);
-                var imageUrl = body.items[0].link; 
+                var jsonRepresentation = JSON.parse(body);
+                console.log(jsonRepresentation);
+                var imageUrl = jsonRepresentation.items[0].link; 
                 console.log("imageUrl " + imageUrl);
                 sendGenericMessage(senderID, messageText, imageUrl);
         });
