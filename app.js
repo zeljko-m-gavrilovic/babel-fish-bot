@@ -10,6 +10,9 @@
 /* jshint node: true, devel: true */
 'use strict';
 
+var request = require("request");
+
+
 const
   bodyParser = require('body-parser'),
   config = require('config'),
@@ -281,17 +284,18 @@ function receivedMessage(event) {
 
       case 'generic':
         var customSearchApi = "https://www.googleapis.com/customsearch/v1?q=" + messageText + "&cx=017114977864929569356%3Aofkvfrky6de&searchType=image&key=AIzaSyBOm9YKk4__F_tU0Cq-6stGEQUmlu0kFsk";
-        getImagesJson(customSearchApi, function(err, data) {
-            if (err !== null) {
-                console.log("Something went wrong: " + err);
-            } else {
-                console.log("Your query count: " + data.query.count);
-                var imageUrl = data.items[0].link; 
-                console.log("iamge URL is " + imageUrl);
-                sendGenericMessage(senderID, messageText, imageUrl);
-            }
-        });
        
+        request({
+            uri: customSearchApi,
+            method: "GET",
+            timeout: 10000,
+            followRedirect: true,
+            maxRedirects: 10
+            }, function(error, response, body) {
+                console.log(body);
+                var imageUrl = body.items[0].link; 
+                sendGenericMessage(senderID, messageText, imageUrl);
+        });
         break;
 
       case 'receipt':
@@ -577,21 +581,6 @@ function sendButtonMessage(recipientId) {
   };
 
   callSendAPI(messageData);
-}
-
-function getImagesJson(url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("get", url, true);
-    xhr.responseType = "json";
-    xhr.onload = function() {
-      var status = xhr.status;
-      if (status == 200) {
-        callback(null, xhr.response);
-      } else {
-        callback(status);
-      }
-    };
-    xhr.send();
 }
 
 /*
