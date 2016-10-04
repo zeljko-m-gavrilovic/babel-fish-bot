@@ -253,17 +253,21 @@ function receivedMessage(event) {
   }
 
   if(messageText) {
-      var word = "word";
-      var language = "sr";
-      if(hasWhiteSpace(messageText)) {
-          var params = messageText.split(' ');
-          if(params.length > 0) {
+     
+     var word = "word";
+     var language = "sr";
+     
+     if(hasWhiteSpace(messageText)) {
+        var params = messageText.split(' ');
+        if(params.length > 0) {
             word = params[0];
             if(params.length > 1) {
                 language = params[1];
             }
         }
-      }
+    } else {
+        word = messageText;
+    }
       console.log("word is " + word);
       console.log("languange is " + language);
 
@@ -576,11 +580,11 @@ function sendGenericMessage(recipientId, originalText, translatedText, imageUrls
             item_url: imageUrls[i],
             image_url: imageUrls[i],
             buttons: [
-                //{
-                //    type: "web_url",
-                //    url: imageUrls[i],
-                //    title: "Check the image"
-                //}
+                {
+                   type: "web_url",
+                   url: imageUrls[i],
+                   title: "Check the image"
+                }
                 //, 
                 //{
                 //    type: "postback",
