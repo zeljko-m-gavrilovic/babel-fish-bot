@@ -264,6 +264,8 @@ function receivedMessage(event) {
             }
         }
       }
+      console.log("word is " + word);
+      console.log("languange is " + language);
 
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
@@ -279,7 +281,7 @@ function receivedMessage(event) {
             maxRedirects: 10
             }, function(error, response, body) {
                 var responseJson = JSON.parse(body);
-                console.log(responseJson);
+                // console.log(responseJson);
                 var imageUrls = [];
                 for(var i=0; i < responseJson.items.length; i++) {
                     imageUrls.push(responseJson.items[i].link);
@@ -292,7 +294,7 @@ function receivedMessage(event) {
                     maxRedirects: 10
                     }, function(error, response, body) {
                         var responseJson = JSON.parse(body);
-                        console.log(responseJson);
+                        // console.log(responseJson);
                         var translatedText = responseJson.translatedText;
                         sendGenericMessage(senderID, word, translatedText, imageUrls);
                 });
