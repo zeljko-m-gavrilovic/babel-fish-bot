@@ -290,8 +290,11 @@ function receivedMessage(event) {
                 for(var i=0; i < responseJson.items.length; i++) {
                     imageUrls.push(responseJson.items[i].link);
                 }
+                
+                var translationUrl = "https://www.googleapis.com/language/translate/v2?q=" + word + "&target=" + language + "&key=" + key;
+                console.log("translationUrl " + translationUrl);
                 request({
-                    uri: "https://www.googleapis.com/language/translate/v2?q=" + word + "&target=" + language + "&key=" + key,
+                    uri: translationUrl,
                     method: "GET",
                     timeout: 10000,
                     followRedirect: true,
