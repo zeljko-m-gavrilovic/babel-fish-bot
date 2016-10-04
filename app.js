@@ -582,20 +582,20 @@ function sendGenericMessage(recipientId, originalText, translatedText, imageUrls
             title: originalText,
             subtitle: translatedText,
             item_url: imageUrls[i],
-            image_url: imageUrls[i],
-            buttons: [
-                {
-                   type: "web_url",
-                   url: imageUrls[i],
-                   title: "Check the image"
-                }
+            image_url: imageUrls[i]
+            //buttons: [
+             //   {
+             //      type: "web_url",
+             //      url: imageUrls[i],
+             //      title: "Check the image"
+             //   }
                 //, 
                 //{
                 //    type: "postback",
                 //    title: "Call Postback",
                 //    payload: "Payload for first bubble",
                 //}
-            ]
+           // ]
           });
     }
   var messageData = {
