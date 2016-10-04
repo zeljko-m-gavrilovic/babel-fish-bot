@@ -254,34 +254,8 @@ function receivedMessage(event) {
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
-    switch (messageText) {
-      case 'image':
-        sendImageMessage(senderID);
-        break;
-
-      case 'gif':
-        sendGifMessage(senderID);
-        break;
-
-      case 'audio':
-        sendAudioMessage(senderID);
-        break;
-
-      case 'video':
-        sendVideoMessage(senderID);
-        break;
-
-      case 'file':
-        sendFileMessage(senderID);
-        break;
-
-      case 'button':
-        sendButtonMessage(senderID);
-        break;
-
-      case 'generic':
         var customSearchApi = "https://www.googleapis.com/customsearch/v1?q=" + messageText + "&cx=017114977864929569356%3Aofkvfrky6de&searchType=image&key=AIzaSyBOm9YKk4__F_tU0Cq-6stGEQUmlu0kFsk";
-       
+
         request({
             uri: customSearchApi,
             method: "GET",
@@ -289,44 +263,23 @@ function receivedMessage(event) {
             followRedirect: true,
             maxRedirects: 10
             }, function(error, response, body) {
-                var jsonRepresentation = JSON.parse(body);
-                console.log(jsonRepresentation);
-                var imageUrl = jsonRepresentation.items[0].link; 
-                console.log("imageUrl " + imageUrl);
-                sendGenericMessage(senderID, messageText, imageUrl);
+                var responseJson = JSON.parse(body);
+                console.log(responseJson);
+                var imageUrls = [];
+                for(var i=0; i < responseJson.items.length; i++) {
+                    imageUrls.push(responseJson.items[i].link);
+                }
+                console.log("imageUrls " + imageUrls);
+                sendGenericMessage(senderID, messageText, imageUrls);
         });
-        break;
 
-      case 'receipt':
-        sendReceiptMessage(senderID);
-        break;
-
-      case 'quick reply':
-        sendQuickReply(senderID);
-        break;
-
-      case 'read receipt':
-        sendReadReceipt(senderID);
-        break;
-
-      case 'typing on':
-        sendTypingOn(senderID);
-        break;
-
-      case 'typing off':
-        sendTypingOff(senderID);
-        break;
-
-      case 'account linking':
-        sendAccountLinking(senderID);
-        break;
-
-      default:
-        sendTextMessage(senderID, messageText);
-    }
-  } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received");
-  }
+        //default:
+        //    sendTextMessage(senderID, messageText);
+        //
+    //} else if (messageAttachments) {
+    //    sendTextMessage(senderID, "Message with attachment received");
+    //}
+}
 }
 
 
@@ -586,7 +539,49 @@ function sendButtonMessage(recipientId) {
  * Send a Structured Message (Generic Message type) using the Send API.
  *
  */
-function sendGenericMessage(recipientId, textMessage, imageUrl) {
+function sendGenericMessage(recipientId, textMessage, imageUrls) {
+  
+    var elements = [];
+    for(var i = 0; i < imageUrls.length; i++) {
+        elements.push({
+            title: "text to image",
+            subtitle: "image for the entered text",
+            item_url: imageUrls[i],
+            image_url: imageUrls[i],
+            buttons: [
+                {
+                    type: "web_url",
+                    url: imageUrls[i],
+                    title: "Check the image"
+                }
+                //, 
+                //{
+                //    type: "postback",
+                //    title: "Call Postback",
+                //    payload: "Payload for first bubble",
+                //}
+            ]
+          });
+    }
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: elements
+        }
+      }
+    }
+  };
+
+  callSendAPI(messageData);
+}
+
+function sendGenericMessageOld(recipientId, textMessage, imageUrl) {
   
   var messageData = {
     recipient: {
@@ -657,7 +652,6 @@ function sendGenericMessage(recipientId, textMessage, imageUrl) {
 
   callSendAPI(messageData);
 }
-
 /*
  * Send a receipt message using the Send API.
  *
