@@ -299,7 +299,8 @@ function receivedMessage(event) {
                     }, function(error, response, body) {
                         var responseJson = JSON.parse(body);
                         // console.log(responseJson);
-                        var translatedText = responseJson.translatedText;
+                        var translatedText = responseJson.data.translations[0].translatedText;
+                        console.log("translatedText " + translatedText);
                         sendGenericMessage(senderID, word, translatedText, imageUrls);
                 });
         });
