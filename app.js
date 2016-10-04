@@ -250,11 +250,21 @@ function receivedMessage(event) {
   }
 
   if (messageText) {
+  var params = messageText.split(' ');
+  var word = "word";
+  var language = "sr";
+  if(params.length > 0) {
+    word = params[0];
+    if(params.length > 1) {
+        language = params[1];
+    }
+  }
 
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
-        var customSearchApi = "https://www.googleapis.com/customsearch/v1?q=" + messageText + "&cx=017114977864929569356%3Aofkvfrky6de&searchType=image&key=AIzaSyBOm9YKk4__F_tU0Cq-6stGEQUmlu0kFsk";
+        var key = "AIzaSyBOm9YKk4__F_tU0Cq-6stGEQUmlu0kFsk";
+        var customSearchApi = "https://www.googleapis.com/customsearch/v1?q=" + word + "&cx=017114977864929569356%3Aofkvfrky6de&searchType=image&key=" + key;
 
         request({
             uri: customSearchApi,
@@ -269,8 +279,18 @@ function receivedMessage(event) {
                 for(var i=0; i < responseJson.items.length; i++) {
                     imageUrls.push(responseJson.items[i].link);
                 }
-                console.log("imageUrls " + imageUrls);
-                sendGenericMessage(senderID, messageText, imageUrls);
+                request({
+                    uri: "https://www.googleapis.com/language/translate/v2?q=" + word + "&target=" + language + "&key=" + key,
+                    method: "GET",
+                    timeout: 10000,
+                    followRedirect: true,
+                    maxRedirects: 10
+                    }, function(error, response, body) {
+                        var responseJson = JSON.parse(body);
+                        console.log(responseJson);
+                        var translatedText = responseJson.translatedText;
+                        sendGenericMessage(senderID, word, translatedText, imageUrls);
+                });
         });
 
         //default:
@@ -539,21 +559,21 @@ function sendButtonMessage(recipientId) {
  * Send a Structured Message (Generic Message type) using the Send API.
  *
  */
-function sendGenericMessage(recipientId, textMessage, imageUrls) {
+function sendGenericMessage(recipientId, originalText, translatedText, imageUrls) {
   
     var elements = [];
     for(var i = 0; i < imageUrls.length; i++) {
         elements.push({
-            title: "text to image",
-            subtitle: "image for the entered text",
+            title: originalText,
+            subtitle: translatedText,
             item_url: imageUrls[i],
             image_url: imageUrls[i],
             buttons: [
-                {
-                    type: "web_url",
-                    url: imageUrls[i],
-                    title: "Check the image"
-                }
+                //{
+                //    type: "web_url",
+                //    url: imageUrls[i],
+                //    title: "Check the image"
+                //}
                 //, 
                 //{
                 //    type: "postback",
