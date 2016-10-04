@@ -301,7 +301,7 @@ function receivedMessage(event) {
                     maxRedirects: 10
                     }, function(error, response, body) {
                         var responseJson = JSON.parse(body);
-                        // console.log(responseJson);
+                        console.log(responseJson);
                         var translatedText = responseJson.data.translations[0].translatedText;
                         console.log("translatedText " + translatedText);
                         sendGenericMessage(senderID, word, translatedText, imageUrls);
