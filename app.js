@@ -201,6 +201,9 @@ function receivedAuthentication(event) {
   sendTextMessage(senderID, "Authentication successful");
 }
 
+function hasWhiteSpace(s) {
+  return s.indexOf(' ') >= 0;
+}
 /*
  * Message Event
  *
@@ -249,16 +252,18 @@ function receivedMessage(event) {
     return;
   }
 
-  if (messageText) {
-  var params = messageText.split(' ');
-  var word = "word";
-  var language = "sr";
-  if(params.length > 0) {
-    word = params[0];
-    if(params.length > 1) {
-        language = params[1];
-    }
-  }
+  if(messageText) {
+      var word = "word";
+      var language = "sr";
+      if(hasWhiteSpace(messageText)) {
+          var params = messageText.split(' ');
+          if(params.length > 0) {
+            word = params[0];
+            if(params.length > 1) {
+                language = params[1];
+            }
+        }
+      }
 
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
