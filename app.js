@@ -291,21 +291,21 @@ function receivedMessage(event) {
                     imageUrls.push(responseJson.items[i].link);
                 }
                 
-                var translationUrl = "https://www.googleapis.com/language/translate/v2?q=" + word + "&target=" + language + "&key=" + key;
-                console.log("translationUrl " + translationUrl);
-                request({
-                    uri: translationUrl,
-                    method: "GET",
-                    timeout: 10000,
-                    followRedirect: true,
-                    maxRedirects: 10
-                    }, function(error, response, body) {
-                        var responseJson = JSON.parse(body);
-                        console.log(responseJson);
-                        var translatedText = responseJson.data.translations[0].translatedText;
-                        console.log("translatedText " + translatedText);
-                        sendGenericMessage(senderID, word, translatedText, imageUrls);
-                });
+               // var translationUrl = "https://www.googleapis.com/language/translate/v2?q=" + word + "&target=" + language + "&key=" + key;
+                // console.log("translationUrl " + translationUrl);
+                // request({
+                //     uri: translationUrl,
+                //     method: "GET",
+                //     timeout: 10000,
+                //     followRedirect: true,
+                //     maxRedirects: 10
+                //     }, function(error, response, body) {
+                //         var responseJson = JSON.parse(body);
+                //         console.log(responseJson);
+                //         var translatedText = responseJson.data.translations[0].translatedText;
+                //         console.log("translatedText " + translatedText);
+                        sendGenericMessage(senderID, word, "", imageUrls);
+                //});
         });
 
         //default:
