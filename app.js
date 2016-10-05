@@ -591,7 +591,7 @@ function sendGenericMessage(recipientId, originalText, translatedText, imageUrls
             title: originalText,
             subtitle: translatedText,
             item_url: imageUrls[i],
-            image_url: imageUrls[i]
+            image_url: imageUrls[i],
             buttons: [
                {
                   type: "web_url",
