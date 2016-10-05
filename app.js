@@ -295,7 +295,7 @@ function receivedMessage(event) {
 
                 console("before sending generic message");
                     sendGenericMessage(senderID, word, translation, imageUrls);
-               }
+               });
         });
 
         //default:
