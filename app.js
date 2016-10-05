@@ -292,7 +292,9 @@ function sendTranslation(messageText, senderID) {
                 // console.log(responseJson);
                 var imageUrls = [];
                 for(var i=0; i < responseJson.items.length; i++) {
-                    imageUrls.push(responseJson.items[i].link);
+                    imageUrls.push({
+                        thumbnailLink: responseJson.items[i].thumbnailLink, 
+                        link: responseJson.items[i].link});
                 }
                 // console.log("before translate");
                 translate(word, language, function(translation){
@@ -590,13 +592,13 @@ function sendGenericMessage(recipientId, originalText, intoLanguage, translatedT
         elements.push({
             title: originalText,
             subtitle: translatedText,
-            item_url: imageUrls[i],
-            image_url: imageUrls[i],
+            item_url: imageUrls[i].link,
+            image_url: imageUrls[i].thumbnailLink,
             buttons: [
                {
                   type: "web_url",
                   url: "https://translate.google.com/#auto/" + intoLanguage + "/" + originalText + "/",//imageUrls[i],
-                  title: "Translation details..."
+                  title: "Translation details"
                }
                 //, 
                 //{
