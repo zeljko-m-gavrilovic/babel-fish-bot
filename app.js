@@ -291,11 +291,10 @@ function receivedMessage(event) {
                     imageUrls.push(responseJson.items[i].link);
                 }
                 console("before translate");
-               translate(word, language, function(translation){
-
-                console("before sending generic message");
+                translate(word, language, function(translation){
+                    console("before sending generic message");
                     sendGenericMessage(senderID, word, translation, imageUrls);
-               });
+                });
         });
 
         //default:
@@ -328,11 +327,9 @@ function translate(word, intoLanguage, callback) {
         callback(translatedText);
     });
   }
-    // translate("cake", "sr", function(translation) {
-    // console.log("resulted translation is " + translation);
-});
 
 /*
+ *
  * Delivery Confirmation Event
  *
  * This event is sent to confirm the delivery of a message. Read more about
