@@ -292,8 +292,9 @@ function sendTranslation(messageText, senderID) {
                 // console.log(responseJson);
                 var imageUrls = [];
                 for(var i=0; i < responseJson.items.length; i++) {
+                console.log("thumbnailLink" + responseJson.items[i].thumbnailLink);
                     imageUrls.push({
-                        thumbnailLink: responseJson.items[i].thumbnailLink, 
+                        thumbnailLink: responseJson.items[i].image.thumbnailLink, 
                         link: responseJson.items[i].link});
                 }
                 // console.log("before translate");
