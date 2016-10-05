@@ -275,7 +275,7 @@ function receivedMessage(event) {
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
         var key = "AIzaSyBOm9YKk4__F_tU0Cq-6stGEQUmlu0kFsk";
-        var customSearchApi = "https://www.googleapis.com/customsearch/v1?q=" + word + "&cx=017114977864929569356%3Aofkvfrky6de&searchType=image&key=" + key;
+        var customSearchApi = "https://www.googleapis.com/customsearch/v1?q=" + word + "&cx=017114977864929569356%3Aofkvfrky6de&searchType=image&num=3&key=" + key;
 
         request({
             uri: customSearchApi,
