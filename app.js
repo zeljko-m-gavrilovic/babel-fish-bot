@@ -290,22 +290,9 @@ function receivedMessage(event) {
                 for(var i=0; i < responseJson.items.length; i++) {
                     imageUrls.push(responseJson.items[i].link);
                 }
-                
-               // var translationUrl = "https://www.googleapis.com/language/translate/v2?q=" + word + "&target=" + language + "&key=" + key;
-                // console.log("translationUrl " + translationUrl);
-                // request({
-                //     uri: translationUrl,
-                //     method: "GET",
-                //     timeout: 10000,
-                //     followRedirect: true,
-                //     maxRedirects: 10
-                //     }, function(error, response, body) {
-                //         var responseJson = JSON.parse(body);
-                //         console.log(responseJson);
-                //         var translatedText = responseJson.data.translations[0].translatedText;
-                //         console.log("translatedText " + translatedText);
-                        sendGenericMessage(senderID, word, "", imageUrls);
-                //});
+               translate(word, language, function(translation){
+                    sendGenericMessage(senderID, word, translation, imageUrls);
+               }
         });
 
         //default:
@@ -317,6 +304,30 @@ function receivedMessage(event) {
 }
 }
 
+function translate(word, intoLanguage, callback) {
+    var translationUrl = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=" + intoLanguage + "&dt=t&q=" + word;
+    console.log("translationUrl " + translationUrl);
+
+    var translatedText = "no translation";
+    request.get(translationUrl, function(error, response, body) {
+        if(error) {
+            console.log("there is error " + error);
+        }
+        
+        console.log("before parsing to JSON");
+        var jsonResponse = eval(body);
+        console.log("after parsing to JSON");
+
+        console.log("body" + body);
+        console.log(jsonResponse);
+        var translatedText = jsonResponse[0][0][0];
+        console.log(translatedText);
+        callback(translatedText);
+    });
+  }
+    // translate("cake", "sr", function(translation) {
+    // console.log("resulted translation is " + translation);
+});
 
 /*
  * Delivery Confirmation Event
