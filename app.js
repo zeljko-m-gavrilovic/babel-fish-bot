@@ -297,7 +297,7 @@ function sendTranslation(messageText, senderID) {
                 // console.log("before translate");
                 translate(word, language, function(translation){
                     // console.log("before sending generic message");
-                    sendGenericMessage(senderID, word, translation, imageUrls);
+                    sendGenericMessage(senderID, word, language, translation, imageUrls);
                 });
         });
 
@@ -583,14 +583,14 @@ function sendButtonMessage(recipientId) {
  * Send a Structured Message (Generic Message type) using the Send API.
  *
  */
-function sendGenericMessage(recipientId, originalText, translatedText, imageUrls) {
+function sendGenericMessage(recipientId, originalText, intoLanguage, translatedText, imageUrls) {
   
     var elements = [];
     for(var i = 0; i < imageUrls.length; i++) {
         elements.push({
             title: originalText,
             subtitle: translatedText,
-            item_url: imageUrls[i],
+            item_url: "https://translate.google.com/#auto/" + intoLanguage + "/" + originalText + "/",//imageUrls[i],
             image_url: imageUrls[i],
             buttons: [
                {
