@@ -290,7 +290,10 @@ function receivedMessage(event) {
                 for(var i=0; i < responseJson.items.length; i++) {
                     imageUrls.push(responseJson.items[i].link);
                 }
+                console("before translate");
                translate(word, language, function(translation){
+
+                console("before sending generic message");
                     sendGenericMessage(senderID, word, translation, imageUrls);
                }
         });
