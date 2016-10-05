@@ -596,7 +596,7 @@ function sendGenericMessage(recipientId, originalText, intoLanguage, translatedT
                {
                   type: "web_url",
                   url: "https://translate.google.com/#auto/" + intoLanguage + "/" + originalText + "/",//imageUrls[i],
-                  title: "Check the translation..."
+                  title: "Translation details..."
                }
                 //, 
                 //{
