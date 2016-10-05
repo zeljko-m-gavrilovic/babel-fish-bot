@@ -253,7 +253,14 @@ function receivedMessage(event) {
   }
 
   if(messageText) {
-     
+      sendTranslation(messageText);  
+   } else if (messageAttachments) {
+      sendTextMessage(senderID, "Message with attachment received");
+    }
+}
+
+function sendTranslation(messageText) {
+
      var word = "word";
      var language = "sr";
      
@@ -271,9 +278,6 @@ function receivedMessage(event) {
       console.log("word is " + word);
       console.log("languange is " + language);
 
-    // If we receive a text message, check to see if it matches any special
-    // keywords and send back the corresponding example. Otherwise, just echo
-    // the text we received.
         var key = "AIzaSyBOm9YKk4__F_tU0Cq-6stGEQUmlu0kFsk";
         var customSearchApi = "https://www.googleapis.com/customsearch/v1?q=" + word + "&cx=017114977864929569356%3Aofkvfrky6de&searchType=image&num=3&key=" + key;
 
@@ -297,14 +301,8 @@ function receivedMessage(event) {
                 });
         });
 
-        //default:
-        //    sendTextMessage(senderID, messageText);
-        //
-    //} else if (messageAttachments) {
-    //    sendTextMessage(senderID, "Message with attachment received");
-    //}
 }
-}
+
 
 function translate(word, intoLanguage, callback) {
     var translationUrl = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=" + intoLanguage + "&dt=t&q=" + word;
