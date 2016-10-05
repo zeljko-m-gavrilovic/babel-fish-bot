@@ -292,7 +292,7 @@ function receivedMessage(event) {
                 }
                 console("before translate");
                 translate(word, language, function(translation){
-                    console("before sending generic message");
+                    console.log("before sending generic message");
                     sendGenericMessage(senderID, word, translation, imageUrls);
                 });
         });
