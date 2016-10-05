@@ -590,13 +590,13 @@ function sendGenericMessage(recipientId, originalText, intoLanguage, translatedT
         elements.push({
             title: originalText,
             subtitle: translatedText,
-            item_url: "https://translate.google.com/#auto/" + intoLanguage + "/" + originalText + "/",//imageUrls[i],
+            item_url: imageUrls[i],
             image_url: imageUrls[i],
             buttons: [
                {
                   type: "web_url",
-                  url: imageUrls[i],
-                  title: "Check the image"
+                  url: "https://translate.google.com/#auto/" + intoLanguage + "/" + originalText + "/",//imageUrls[i],
+                  title: "Check the translation..."
                }
                 //, 
                 //{
